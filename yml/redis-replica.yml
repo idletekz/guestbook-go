@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - image: k8s.gcr.io/redis-slave:v2
-        name: redis-replica
+        name: redis
         ports:
         - name: redis-server
           containerPort: 6379
