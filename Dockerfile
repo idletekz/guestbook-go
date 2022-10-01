@@ -1,9 +1,9 @@
 FROM golang:alpine as builder
-RUN go get github.com/codegangsta/negroni \
-           github.com/gorilla/mux \
-           github.com/xyproto/simpleredis
+# Git is required for fetching the dependencies.
+RUN apk update && apk add --no-cache git
+RUN mkdir /app && apk update && apk add git
+ADD main.go go.mod go.sum /app/
 WORKDIR /app
-ADD ./main.go .
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
 FROM scratch
