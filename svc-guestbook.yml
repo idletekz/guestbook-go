@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: guestbook
+  name: guestbook
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: http-server
+  selector:
+    app: guestbook
+

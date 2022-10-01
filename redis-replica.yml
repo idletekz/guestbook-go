@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: redis
+    role: replica
+  name: redis-replica
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: redis
+      role: replica
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: replica
+    spec:
+      containers:
+      - image: k8s.gcr.io/redis-slave:v2
+        name: redis-replica
+        ports:
+        - name: redis-server
+          containerPort: 6379
