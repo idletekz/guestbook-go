@@ -22,7 +22,7 @@ var (
 func staticFileHandler() http.Handler {
   fsys := fs.FS(content)
   html, _ := fs.Sub(fsys, "public")
-  return http.FileServer(http.FS(html))
+  return http.StripPrefix("/public/", http.FileServer(http.FS(html)))
 }
 
 func ListRangeHandler(rw http.ResponseWriter, req *http.Request) {
