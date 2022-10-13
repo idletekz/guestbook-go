@@ -7,7 +7,7 @@ ADD public /app/public
 WORKDIR /app
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
-FROM alpine
+FROM scratch
 WORKDIR /app
 COPY --from=builder /app/main .
 CMD ["/app/main"]
