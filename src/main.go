@@ -15,14 +15,14 @@ import (
 var (
 	masterPool *simpleredis.ConnectionPool
 	replicaPool  *simpleredis.ConnectionPool
-	//go:embed public/*
+	//go:embed public
 	content embed.FS	
 )
 
 func staticFileHandler() http.Handler {
   fsys := fs.FS(content)
   html, _ := fs.Sub(fsys, "public")
-  return http.FileServer(http.FS(html))
+  return http.StripPrefix("/", http.FileServer(http.FS(html)))
 }
 
 func ListRangeHandler(rw http.ResponseWriter, req *http.Request) {
