@@ -17,6 +17,7 @@ spec:
       containers:
       - image: idletekz/guestbook:0.0.1
         name: guestbook
+        imagePullPolicy: Always
         ports:
           - name: http-server
             containerPort: 3000
