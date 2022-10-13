@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
+	"embed"
+	"io/fs"
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 	"github.com/xyproto/simpleredis"
@@ -14,7 +15,15 @@ import (
 var (
 	masterPool *simpleredis.ConnectionPool
 	replicaPool  *simpleredis.ConnectionPool
+	//go:embed public
+	content embed.FS	
 )
+
+func staticFileHandler() http.Handler {
+  fsys := fs.FS(content)
+  html, _ := fs.Sub(fsys, "public")
+  return http.FileServer(http.FS(html))
+}
 
 func ListRangeHandler(rw http.ResponseWriter, req *http.Request) {
 	key := mux.Vars(req)["key"]
@@ -68,6 +77,7 @@ func main() {
 	r.Path("/rpush/{key}/{value}").Methods("GET").HandlerFunc(ListPushHandler)
 	r.Path("/info").Methods("GET").HandlerFunc(InfoHandler)
 	r.Path("/env").Methods("GET").HandlerFunc(EnvHandler)
+	r.Path("/").Handler(staticFileHandler())
 
 	n := negroni.Classic()
 	n.UseHandler(r)
