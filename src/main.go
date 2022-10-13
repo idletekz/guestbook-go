@@ -22,7 +22,7 @@ var (
 func staticFileHandler() http.Handler {
   fsys := fs.FS(content)
   html, _ := fs.Sub(fsys, "public")
-  return http.StripPrefix("/ui/", http.FileServer(http.FS(html)))
+  return http.FileServer(http.FS(html))
 }
 
 func ListRangeHandler(rw http.ResponseWriter, req *http.Request) {
@@ -77,7 +77,7 @@ func main() {
 	r.Path("/rpush/{key}/{value}").Methods("GET").HandlerFunc(ListPushHandler)
 	r.Path("/info").Methods("GET").HandlerFunc(InfoHandler)
 	r.Path("/env").Methods("GET").HandlerFunc(EnvHandler)
-	r.Path("/ui/").Handler(staticFileHandler())
+	r.Path("/").Handler(staticFileHandler())
 
 	n := negroni.Classic()
 	n.UseHandler(r)
