@@ -15,7 +15,7 @@ import (
 var (
 	masterPool *simpleredis.ConnectionPool
 	replicaPool  *simpleredis.ConnectionPool
-	//go:embed public
+	//go:embed public/*
 	content embed.FS	
 )
 
