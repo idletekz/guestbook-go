@@ -15,7 +15,7 @@ spec:
         app: guestbook
     spec:
       containers:
-      - image: idletekz/guestbook:latest
+      - image: idletekz/guestbook:0.0.1
         name: guestbook
         ports:
           - name: http-server
