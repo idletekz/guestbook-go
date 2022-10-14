@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 	"embed"
-	// "io/fs"
+	"io/fs"
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 	"github.com/xyproto/simpleredis"
@@ -20,9 +20,9 @@ var (
 )
 
 func staticFileHandler() http.Handler {
-  // fsys := fs.FS(content)
-  // html, _ := fs.Sub(fsys, "static")
-  return http.StripPrefix("/", http.FileServer(http.FS(content)))
+  fsys := fs.FS(content)
+  html, _ := fs.Sub(fsys, "static")
+  return http.StripPrefix("/", http.FileServer(http.FS(html)))
 }
 
 func ListRangeHandler(rw http.ResponseWriter, req *http.Request) {
@@ -77,7 +77,7 @@ func main() {
 	r.Path("/rpush/{key}/{value}").Methods("GET").HandlerFunc(ListPushHandler)
 	r.Path("/info").Methods("GET").HandlerFunc(InfoHandler)
 	r.Path("/env").Methods("GET").HandlerFunc(EnvHandler)
-	r.PathPrefix("/static/").Handler(staticFileHandler())
+	r.PathPrefix("/").Handler(staticFileHandler())
 
 	n := negroni.Classic()
 	n.UseHandler(r)
