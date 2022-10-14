@@ -77,7 +77,7 @@ func main() {
 	r.Path("/rpush/{key}/{value}").Methods("GET").HandlerFunc(ListPushHandler)
 	r.Path("/info").Methods("GET").HandlerFunc(InfoHandler)
 	r.Path("/env").Methods("GET").HandlerFunc(EnvHandler)
-	r.PathPrefix("/static").Handler(staticFileHandler())
+	r.PathPrefix("/static/").Handler(staticFileHandler())
 
 	n := negroni.Classic()
 	n.UseHandler(r)
